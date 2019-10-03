@@ -1,13 +1,13 @@
 import { exec } from "@actions/exec";
 import { ExecOptions } from "@actions/exec/lib/interfaces";
 
-interface Runtime {
-  name: string;
+export interface Runtime {
   isAvailable: boolean;
+  name: string;
   identifier: string;
 }
 
-export async function runtimes(): Promise<Array<Runtime>> {
+export async function runtimes(): Promise<Runtime[]> {
   var stdout: string = "";
   var stderr: string = "";
 
@@ -15,10 +15,10 @@ export async function runtimes(): Promise<Array<Runtime>> {
     silent: true,
     listeners: {
       stdout: function(data) {
-        stdout = data.toString();
+        stdout += data.toString();
       },
       stderr: function(err) {
-        stderr = err.toString();
+        stderr += err.toString();
       }
     }
   };
@@ -29,7 +29,7 @@ export async function runtimes(): Promise<Array<Runtime>> {
     throw stderr;
   }
 
-  return JSON.parse(stdout)["runtimes"];
+  return JSON.parse(stdout).runtimes;
 }
 
 interface Device {
@@ -46,10 +46,10 @@ export async function devices(runtime: Runtime): Promise<Array<Device>> {
     silent: true,
     listeners: {
       stdout: function(data) {
-        stdout = data.toString();
+        stdout += data.toString();
       },
       stderr: function(err) {
-        stderr = err.toString();
+        stderr += err.toString();
       }
     }
   };
@@ -60,5 +60,5 @@ export async function devices(runtime: Runtime): Promise<Array<Device>> {
     throw stderr;
   }
 
-  return JSON.parse(stdout)["devices"][runtime.identifier];
+  return JSON.parse(stdout).devices[runtime.identifier];
 }
