@@ -1,10 +1,13 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: "Choose Device"
+description: "Generates destination string for xcodebuild."
 inputs:
-  myInput:              # change this
-    description: 'input description here'
-    default: 'default value if applicable'
+  os:
+    description: "Device OS (e.g. iOS 12.4, tvOS 12.4, macOS 10.14)"
+    required: true
+    default: "iOS 12.4"
+outputs:
+  destination:
+    description: "Destination string for xcodebuild."
 runs:
-  using: 'node12'
-  main: 'lib/main.js'
+  using: "node12"
+  main: "lib/main.js"
